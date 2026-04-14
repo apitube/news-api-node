@@ -1,5 +1,5 @@
 {
-  "name": "apitube-news-api",
+  "name": "@apitube/news-api",
   "version": "1.0.3",
   "description": "Node.js SDK for the APITube News API — access global news articles, headlines, stories, sentiment analysis, and more.",
   "type": "module",
@@ -22,17 +22,31 @@
     "build": "tsup src/index.ts --format esm,cjs --dts --clean",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "apitube",
     "news",
     "news-api",
     "sentiment",
-    "nlp"
+    "nlp",
+    "sdk",
+    "typescript"
   ],
   "author": "APITube",
   "license": "MIT",
+  "homepage": "https://github.com/apitube/news-api-node#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apitube/news-api-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/apitube/news-api-node/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18"
   },

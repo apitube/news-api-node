@@ -15,13 +15,13 @@ Node.js/TypeScript SDK for the [APITube News API](https://apitube.io) — access
 ## Installation
 
 ```bash
-npm install apitube-news-api
+npm install @apitube/news-api
 ```
 
 ## Quick Start
 
 ```ts
-import { Client } from 'apitube-news-api';
+import { Client } from '@apitube/news-api';
 
 const client = new Client({ apiKey: 'your-api-key' });
 
@@ -43,7 +43,7 @@ for (const article of response.articles) {
 ### Initialize the client
 
 ```ts
-import { Client } from 'apitube-news-api';
+import { Client } from '@apitube/news-api';
 
 const client = new Client({
   apiKey: 'your-api-key',
@@ -55,7 +55,7 @@ You can pass a custom axios instance:
 
 ```ts
 import axios from 'axios';
-import { Client } from 'apitube-news-api';
+import { Client } from '@apitube/news-api';
 
 const httpClient = axios.create({ timeout: 30_000 });
 const client = new Client({ apiKey: 'your-api-key', httpClient });
@@ -144,7 +144,7 @@ import {
   ApiException,
   AuthenticationException,
   RateLimitException,
-} from 'apitube-news-api';
+} from '@apitube/news-api';
 
 try {
   const response = await client.news('everything', { title: 'node' });
