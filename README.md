@@ -1,5 +1,13 @@
 # APITube News API Node.js SDK
 
+[![GitHub Release](https://img.shields.io/github/v/release/apitube/news-api-node)](https://github.com/apitube/news-api-node/releases)
+[![npm Version](https://img.shields.io/npm/v/@apitube/news-api)](https://www.npmjs.com/package/@apitube/news-api)
+[![Node.js Version](https://img.shields.io/node/v/@apitube/news-api)](https://www.npmjs.com/package/@apitube/news-api)
+[![License](https://img.shields.io/npm/l/@apitube/news-api)](https://www.npmjs.com/package/@apitube/news-api)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/apitube/news-api-node/pulls)
+[![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue.svg)](https://www.typescriptlang.org/)
+[![Made with Love](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red.svg)](https://apitube.io)
+
 Node.js/TypeScript SDK for the [APITube News API](https://apitube.io) — access global news articles, headlines, stories, sentiment analysis, and more.
 
 - [API Documentation](https://docs.apitube.io/)
