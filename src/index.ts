@@ -1,5 +1,5 @@
 export { Client } from './Client.js';
-export type { ClientOptions, NewsEndpoint } from './Client.js';
+export type { ClientOptions, NewsEndpoint, SuggestType } from './Client.js';
 export { Transporter } from './Transporter.js';
 
 export { ApiKey } from './valueObjects/ApiKey.js';
@@ -12,6 +12,7 @@ export { RateLimitException } from './exceptions/RateLimitException.js';
 export { Article } from './responses/Article.js';
 export { ArticleList } from './responses/ArticleList.js';
 export { BalanceResponse } from './responses/BalanceResponse.js';
+export { ReferenceList } from './responses/ReferenceList.js';
 
 export { Author } from './dataObjects/Author.js';
 export { Category } from './dataObjects/Category.js';

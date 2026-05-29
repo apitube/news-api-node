@@ -16,10 +16,22 @@ export class Transporter {
     this.client = client ?? axios.create();
   }
 
-  async get(path: string): Promise<Record<string, any>> {
+  async get(path: string, query: Record<string, any> = {}): Promise<Record<string, any>> {
+    let url = this.baseUri.toString() + path;
+    const search = new URLSearchParams();
+    for (const [key, value] of Object.entries(query)) {
+      if (value != null) {
+        search.append(key, String(value));
+      }
+    }
+    const queryString = search.toString();
+    if (queryString !== '') {
+      url += `?${queryString}`;
+    }
+
     const response = await this.client.request({
       method: 'GET',
-      url: this.baseUri.toString() + path,
+      url,
       headers: {
         'X-API-Key': this.apiKey.toString(),
         Accept: 'application/json',

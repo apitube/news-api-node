@@ -130,6 +130,68 @@ for (const article of response.articles) {
 }
 ```
 
+### Raw articles
+
+Fetch recently discovered articles before parsing and enrichment:
+
+```ts
+const response = await client.news('raw', {
+  per_page: 50,
+  'sort.by': 'published_at',
+  'sort.order': 'desc',
+});
+for (const article of response.articles) {
+  console.log(article.title);
+}
+```
+
+### Count articles
+
+Count articles matching the same filters as `everything`:
+
+```ts
+const count = await client.count({
+  title: 'artificial intelligence',
+  'language.code': 'en',
+});
+console.log(`Matching articles: ${count}`);
+```
+
+### Autocomplete suggestions
+
+Supported types: `categories`, `topics`, `industries`, `entities`.
+
+```ts
+const items = await client.suggest('categories', 'spo');
+for (const item of items) {
+  console.log(`${item.name} (id: ${item.id})`);
+}
+```
+
+### Reference data (people, companies, sources, journalists)
+
+Each entity exposes a paginated list method and a profile method by ID:
+
+```ts
+// List
+const people = await client.people({ name: 'Elon', per_page: 5 });
+for (const person of people.results) {
+  console.log(`${person.name} (id: ${person.id})`);
+}
+
+// Profile with coverage statistics
+const profile = await client.person(people.results[0].id);
+console.log(`Articles: ${profile.coverage?.article_count}`);
+
+// Same shape for the other entities:
+await client.companies({ name: 'Tesla' });
+await client.company(id);
+await client.sources({ country: 1 });
+await client.source(id);
+await client.journalists({ name: 'Smith' });
+await client.journalist(id);
+```
+
 ### Check balance
 
 ```ts

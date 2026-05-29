@@ -213,4 +213,101 @@ describe('Client', () => {
     expect(lastRequest.headers?.['Content-Type']).toBe('application/json');
     expect(lastRequest.method?.toUpperCase()).toBe('POST');
   });
+
+  test('news raw', async () => {
+    mock.onPost('https://api.apitube.io/v1/news/raw').reply(
+      200,
+      JSON.stringify({
+        results: [{ id: 'raw-1', title: 'Raw article', body: 'text' }],
+        page: 1,
+        has_next_pages: false,
+      }),
+      { 'Content-Type': 'application/json' },
+    );
+
+    const response = await client.news('raw', { per_page: 10 });
+    expect(response.articles).toHaveLength(1);
+    expect(response.articles[0].title).toBe('Raw article');
+
+    const lastRequest = mock.history.post[mock.history.post.length - 1];
+    expect(lastRequest.url).toContain('/v1/news/raw');
+    expect(lastRequest.method?.toUpperCase()).toBe('POST');
+  });
+
+  test('count', async () => {
+    mock.onPost('https://api.apitube.io/v1/news/count').reply(
+      200,
+      JSON.stringify({ status: 'ok', count: 4242, request_id: 'req-count' }),
+      { 'Content-Type': 'application/json' },
+    );
+
+    const count = await client.count({ title: 'AI' });
+    expect(count).toBe(4242);
+
+    const lastRequest = mock.history.post[mock.history.post.length - 1];
+    expect(lastRequest.url).toContain('/v1/news/count');
+    expect(lastRequest.method?.toUpperCase()).toBe('POST');
+  });
+
+  test('suggest', async () => {
+    mock.onGet(/\/v1\/suggest\/categories/).reply(
+      200,
+      JSON.stringify([{ id: 11100000, name: 'sport' }]),
+      { 'Content-Type': 'application/json' },
+    );
+
+    const items = await client.suggest('categories', 'spo');
+    expect(items).toHaveLength(1);
+    expect(items[0].name).toBe('sport');
+
+    const lastRequest = mock.history.get[mock.history.get.length - 1];
+    expect(lastRequest.url).toContain('/v1/suggest/categories');
+    expect(lastRequest.url).toContain('prefix=spo');
+    expect(lastRequest.method?.toUpperCase()).toBe('GET');
+  });
+
+  test('suggest invalid type throws', async () => {
+    await expect(client.suggest('bogus', 'x')).rejects.toThrow('Unknown suggest type: bogus');
+  });
+
+  test('people list', async () => {
+    mock.onGet(/\/v1\/people\?/).reply(
+      200,
+      JSON.stringify({
+        status: 'ok',
+        page: 1,
+        limit: 100,
+        has_next_pages: false,
+        results: [{ id: 1, name: 'Elon Musk', wikidata_id: 'Q317521' }],
+      }),
+      { 'Content-Type': 'application/json' },
+    );
+
+    const response = await client.people({ name: 'Elon' });
+    expect(response.results).toHaveLength(1);
+    expect(response.results[0].name).toBe('Elon Musk');
+    expect(response.page).toBe(1);
+    expect(response.hasNextPages).toBe(false);
+
+    const lastRequest = mock.history.get[mock.history.get.length - 1];
+    expect(lastRequest.url).toContain('/v1/people');
+    expect(lastRequest.url).toContain('name=Elon');
+    expect(lastRequest.method?.toUpperCase()).toBe('GET');
+  });
+
+  test('person profile', async () => {
+    mock.onGet('https://api.apitube.io/v1/people/1').reply(
+      200,
+      JSON.stringify({ id: 1, name: 'Elon Musk', coverage: { article_count: 1234 } }),
+      { 'Content-Type': 'application/json' },
+    );
+
+    const profile = await client.person(1);
+    expect(profile.name).toBe('Elon Musk');
+    expect(profile.coverage.article_count).toBe(1234);
+
+    const lastRequest = mock.history.get[mock.history.get.length - 1];
+    expect(lastRequest.url).toContain('/v1/people/1');
+    expect(lastRequest.method?.toUpperCase()).toBe('GET');
+  });
 });
