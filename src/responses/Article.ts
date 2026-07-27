@@ -12,6 +12,7 @@ import { Source } from '../dataObjects/Source.js';
 import { Story } from '../dataObjects/Story.js';
 import { Summary } from '../dataObjects/Summary.js';
 import { Topic } from '../dataObjects/Topic.js';
+import { Translations } from '../dataObjects/Translations.js';
 
 export class Article {
   constructor(
@@ -24,6 +25,7 @@ export class Article {
     public readonly image: string | null,
     public readonly publishedAt: string | null,
     public readonly language: string | null,
+    public readonly translations: Translations | null,
     public readonly source: Source | null,
     public readonly author: Author | null,
     public readonly categories: Category[] | null,
@@ -63,6 +65,7 @@ export class Article {
       data.image ?? null,
       data.published_at ?? null,
       data.language ?? null,
+      data.translations != null ? Translations.fromArray(data.translations) : null,
       data.source != null ? Source.fromArray(data.source) : null,
       data.author != null ? Author.fromArray(data.author) : null,
       Array.isArray(data.categories) ? data.categories.map((i: any) => Category.fromArray(i)) : null,

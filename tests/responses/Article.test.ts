@@ -14,6 +14,8 @@ import { Source } from '../../src/dataObjects/Source.js';
 import { Story } from '../../src/dataObjects/Story.js';
 import { Summary } from '../../src/dataObjects/Summary.js';
 import { Topic } from '../../src/dataObjects/Topic.js';
+import { Translations } from '../../src/dataObjects/Translations.js';
+import { Translation } from '../../src/dataObjects/Translation.js';
 
 describe('Article.fromArray', () => {
   test('full', () => {
@@ -26,7 +28,13 @@ describe('Article.fromArray', () => {
       href: 'https://example.com/ai-revolution',
       image: 'https://example.com/image.jpg',
       published_at: '2026-01-15T10:30:00Z',
-      language: 'en',
+      language: 'de',
+      translations: {
+        en: {
+          title: 'Chancellor announces new budget',
+          description: 'The government presented the budget for the next year.',
+        },
+      },
       source: {
         id: 'src-1',
         domain: 'example.com',
@@ -109,7 +117,11 @@ describe('Article.fromArray', () => {
     expect(article.url).toBe('https://example.com/ai-revolution');
     expect(article.image).toBe('https://example.com/image.jpg');
     expect(article.publishedAt).toBe('2026-01-15T10:30:00Z');
-    expect(article.language).toBe('en');
+    expect(article.language).toBe('de');
+    expect(article.translations).toBeInstanceOf(Translations);
+    expect(article.translations?.en).toBeInstanceOf(Translation);
+    expect(article.translations?.en?.title).toBe('Chancellor announces new budget');
+    expect(article.translations?.en?.description).toBe('The government presented the budget for the next year.');
 
     expect(article.source).toBeInstanceOf(Source);
     expect(article.source?.domain).toBe('example.com');
@@ -214,6 +226,7 @@ describe('Article.fromArray', () => {
     expect(article.keywords).toBeNull();
     expect(article.isDuplicate).toBeNull();
     expect(article.readTime).toBeNull();
+    expect(article.translations).toBeNull();
   });
 
   test('empty', () => {
@@ -221,5 +234,25 @@ describe('Article.fromArray', () => {
     expect(article.id).toBeNull();
     expect(article.title).toBeNull();
     expect(article.source).toBeNull();
+  });
+});
+
+describe('Article translations', () => {
+  test('English article carries an empty block', () => {
+    const article = Article.fromArray({
+      id: 1,
+      language: 'en',
+      translations: { en: { title: null, description: null } },
+    });
+
+    expect(article.translations?.en?.title).toBeNull();
+    expect(article.translations?.en?.description).toBeNull();
+  });
+
+  test('block without the en key resolves to null', () => {
+    const article = Article.fromArray({ id: 1, translations: {} });
+
+    expect(article.translations).toBeInstanceOf(Translations);
+    expect(article.translations?.en).toBeNull();
   });
 });

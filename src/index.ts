@@ -31,3 +31,5 @@ export { SourceRankings } from './dataObjects/SourceRankings.js';
 export { Story } from './dataObjects/Story.js';
 export { Summary } from './dataObjects/Summary.js';
 export { Topic } from './dataObjects/Topic.js';
+export { Translation } from './dataObjects/Translation.js';
+export { Translations } from './dataObjects/Translations.js';

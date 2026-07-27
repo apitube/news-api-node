@@ -85,6 +85,10 @@ for (const article of response.articles) {
   console.log(article.title);
   console.log(`Source: ${article.source?.domain}`);
   console.log(`Sentiment: ${article.sentiment?.overall?.polarity}`);
+
+  // English translation of the headline for non-English articles
+  // (null for English articles — fall back to the original title)
+  console.log(article.translations?.en?.title ?? article.title);
 }
 ```
 
