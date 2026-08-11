@@ -80,6 +80,33 @@ describe('Client', () => {
     expect(response.requestId).toBe('req-123');
   });
 
+  // Плоский params форвардится как есть, поэтому prompt работает без изменений SDK; разбор
+  // приезжает в meta.prompt (api/internal/middleware/prompt-translate.js). README это обещает.
+  test('news everything with prompt forwards it and exposes meta.prompt', async () => {
+    mock.onPost('https://api.apitube.io/v1/news/everything').reply(
+      200,
+      JSON.stringify({
+        results: [],
+        page: 1,
+        meta: {
+          prompt: {
+            text: 'Tesla news',
+            applied: { 'organization.name': 'Tesla' },
+            ignored: [],
+            cached: false,
+          },
+        },
+      }),
+      { 'Content-Type': 'application/json' },
+    );
+
+    const response = await client.news('everything', { prompt: 'Tesla news' });
+
+    expect(JSON.parse(mock.history.post[0].data)).toEqual({ prompt: 'Tesla news' });
+    expect(response.meta?.prompt?.applied).toEqual({ 'organization.name': 'Tesla' });
+    expect(response.meta?.prompt?.cached).toBe(false);
+  });
+
   test('news top-headlines', async () => {
     mock.onPost('https://api.apitube.io/v1/news/top-headlines').reply(
       200,

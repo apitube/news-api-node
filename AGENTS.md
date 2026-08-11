@@ -36,7 +36,10 @@ Request flow: `Client` → `Transporter` → APITube REST API → typed response
 - `src/index.ts` — public surface. Exports `Client`, types (`ClientOptions`,
   `NewsEndpoint`, `SuggestType`), response classes, data objects, exceptions, value objects.
 - `src/Client.ts` — public entry point. Methods:
-  - `news(endpoint, params, version)` — `everything` | `top-headlines` | `story` | `article` | `raw` (**POST**; `story` requires `id`)
+  - `news(endpoint, params, version)` — `everything` | `top-headlines` | `story` | `article` | `raw` (**POST**; `story` requires `id`).
+    `params` is forwarded verbatim, so every News API filter works, including `prompt` — a plain-language
+    request (3–500 chars) that the API expands into filters server-side and reports back in
+    `response.meta.prompt` (`applied` / `ignored` / `cached` / `model`).
   - `count(params, version)` — **POST**, returns `number`
   - `suggest(type, prefix, version)` — `categories` | `topics` | `industries` | `entities` (GET)
   - `people/companies/sources/journalists(params, version)` — list, return `ReferenceList` (GET)
