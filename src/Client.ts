@@ -130,20 +130,6 @@ export class Client {
     return this.transporter.get(`/${version}/companies/${id}`, params);
   }
 
-  /** List news sources tracked by APITube. */
-  async sources(params: Record<string, any> = {}, version: string = 'v1'): Promise<ReferenceList> {
-    return ReferenceList.fromArray(await this.transporter.get(`/${version}/sources`, params));
-  }
-
-  /** Retrieve a single source profile with coverage statistics. */
-  async source(
-    id: number | string,
-    params: Record<string, any> = {},
-    version: string = 'v1',
-  ): Promise<Record<string, any>> {
-    return this.transporter.get(`/${version}/sources/${id}`, params);
-  }
-
   /** List journalists tracked by APITube. */
   async journalists(params: Record<string, any> = {}, version: string = 'v1'): Promise<ReferenceList> {
     return ReferenceList.fromArray(await this.transporter.get(`/${version}/journalists`, params));

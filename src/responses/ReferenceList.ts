@@ -1,5 +1,5 @@
 /**
- * Paginated list of reference entities (people, companies, sources, journalists).
+ * Paginated list of reference entities (people, companies, journalists).
  *
  * The pagination metadata is typed, while each result item is kept as a raw
  * object since reference payloads vary by entity type.
